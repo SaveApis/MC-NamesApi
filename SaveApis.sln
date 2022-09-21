@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McNamesApi", "McNamesApi\McNamesApi.csproj", "{07B65823-990E-4ACD-8E51-769596B8C570}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generator", "Generator", "{217A5606-A575-4CD2-825C-31BA7BA1253E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConStringGenerator", "Generator\ConStringGenerator\ConStringGenerator.csproj", "{0AFFB541-277A-4DF8-A6A0-CB9464C01911}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07B65823-990E-4ACD-8E51-769596B8C570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B65823-990E-4ACD-8E51-769596B8C570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B65823-990E-4ACD-8E51-769596B8C570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B65823-990E-4ACD-8E51-769596B8C570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AFFB541-277A-4DF8-A6A0-CB9464C01911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AFFB541-277A-4DF8-A6A0-CB9464C01911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AFFB541-277A-4DF8-A6A0-CB9464C01911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AFFB541-277A-4DF8-A6A0-CB9464C01911}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0AFFB541-277A-4DF8-A6A0-CB9464C01911} = {217A5606-A575-4CD2-825C-31BA7BA1253E}
+	EndGlobalSection
+EndGlobal
