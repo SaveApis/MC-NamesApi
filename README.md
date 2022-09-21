@@ -1,1 +1,1 @@
-"# MC-NamesApi" 
+# MC-NamesApi
