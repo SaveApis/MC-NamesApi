@@ -2,7 +2,6 @@
 
 using McNamesApi.Base;
 using McNamesApi.Data.Context;
-using McNamesApi.Data.Models;
 using McNamesApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +15,7 @@ namespace McNamesApi.Data.Controller;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Produces("application/json")]
 public class UuidsController : ControllerBase
 {
     private readonly DataContext _context;
@@ -35,10 +35,9 @@ public class UuidsController : ControllerBase
     /// <param name="name">The current name of the player.</param>
     /// <returns>The UUID of the specified player. (Is ’null' if the player is not registered in the database)</returns>
     [HttpGet("Current/{name}")]
-    [ApiExplorerSettings(GroupName = "v3")]
     public async Task<ActionResult<IRestResult<Guid>>> ByCurrentName(string name)
     {
-        PlayerModel? model =
+        var model =
             await _context.Players.FirstOrDefaultAsync(it => it.Name.ToLower() == name.ToLower());
         if (model is null)
             return NotFound(new BaseRestResult<Guid>(true,
@@ -53,10 +52,9 @@ public class UuidsController : ControllerBase
     /// <param name="name">A HistoryName of the player.</param>
     /// <returns>The UUID of the specified player. (Is ’null' if the player is not registered in the database)</returns>
     [HttpGet("History/{name}")]
-    [ApiExplorerSettings(GroupName = "v3")]
     public async Task<ActionResult<IRestResult<IEnumerable<Guid>>>> ByHistoryName(string name)
     {
-        List<NameHistoryModel> historyModels =
+        var historyModels =
             await _context.NameHistory.Where(it => it.Name.ToLower() == name.ToLower()).ToListAsync();
 
         return Ok(new BaseRestResult<IEnumerable<Guid>>(false,

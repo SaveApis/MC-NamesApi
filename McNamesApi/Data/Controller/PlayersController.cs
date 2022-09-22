@@ -3,6 +3,7 @@
 using McNamesApi.Data.Context;
 using McNamesApi.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 #endregion
 
@@ -13,6 +14,7 @@ namespace McNamesApi.Data.Controller;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Produces("application/json")]
 public class PlayersController : ControllerBase
 {
     private readonly DataContext _context;
@@ -32,17 +34,22 @@ public class PlayersController : ControllerBase
     /// <param name="model">Model where the necessary information is specified.</param>
     /// <returns></returns>
     [HttpPost]
-    [ApiExplorerSettings(GroupName = "v2")]
     public async Task<IActionResult> Add(PlayerModelAddDto model)
     {
         // TODO Add Message
         // TODO Add Result to Action
+        // TODO Add Agreement Request
         try
         {
-            PlayerModel? playerModel = await _context.Players.FindAsync(model.Uuid);
+            var agreement = await _context.Agreements.FirstOrDefaultAsync(it => it.Uuid == model.Uuid);
+
+            if (agreement is null || agreement.Agreed)
+                return BadRequest();
+
+            var playerModel = await _context.Players.FindAsync(model.Uuid);
             if (playerModel is null)
             {
-                PlayerModel newPlayerModel = new PlayerModel
+                var newPlayerModel = new PlayerModel
                 {
                     Uuid = model.Uuid,
                     Name = model.Name,
@@ -56,8 +63,8 @@ public class PlayersController : ControllerBase
 
             if (model.Name.Equals(playerModel.Name, StringComparison.InvariantCultureIgnoreCase))
                 return Ok();
-            DateTime now = DateTime.UtcNow;
-            NameHistoryModel historyModel = new NameHistoryModel
+            var now = DateTime.UtcNow;
+            var historyModel = new NameHistoryModel
             {
                 Name = playerModel.Name,
                 Player = playerModel,

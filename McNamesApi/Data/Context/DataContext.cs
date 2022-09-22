@@ -31,4 +31,6 @@ public class DataContext : DbContext
     ///     Ref to the NameHistory-Table
     /// </summary>
     public DbSet<NameHistoryModel> NameHistory { get; set; }
+
+    public DbSet<PlayerAgreement> Agreements { get; set; }
 }
