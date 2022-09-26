@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McNamesApi", "McNamesApi\McNamesApi.csproj", "{07B65823-990E-4ACD-8E51-769596B8C570}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApi", "RestApi\RestApi.csproj", "{07B65823-990E-4ACD-8E51-769596B8C570}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generator", "Generator", "{217A5606-A575-4CD2-825C-31BA7BA1253E}"
 EndProject
