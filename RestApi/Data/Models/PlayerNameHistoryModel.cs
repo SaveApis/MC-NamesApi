@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable disable
+using System.ComponentModel.DataAnnotations;
 
 namespace RestApi.Data.Models;
 
 public class PlayerNameHistoryModel
 {
     public int Id { get; set; }
-    [Required] public PlayerNameModel Player { get; set; }
+    [Required] public virtual PlayerNameModel Player { get; set; }
 
     [Required] public string Name { get; set; }
 

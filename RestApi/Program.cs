@@ -13,9 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var conString = builder.Configuration.GetConnectionString("NameMcDatabase");
 builder.Services.AddDbContext<DataContext>(it =>
-    it.UseMySql(conString, ServerVersion.AutoDetect(conString))
-        .UseLazyLoadingProxies()
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll));
+        it.UseMySql(conString, ServerVersion.AutoDetect(conString))
+            .UseLazyLoadingProxies()
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll),
+    ServiceLifetime.Singleton);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -37,7 +38,12 @@ builder.Services.AddSwaggerGen(
                 Name = "Felix Hake",
                 Url = new Uri("https://saveapis.com")
             },
-            Version = "v1"
+            Version = "v1",
+            License = new OpenApiLicense()
+            {
+                Name = "Apache Licence 2.0",
+                Url = new Uri("https://raw.githubusercontent.com/SaveApis/MC-NamesApi/main/LICENCE")
+            }
         });
 
         var filePath = Path.Combine(AppContext.BaseDirectory, "RestApi.xml");
@@ -52,12 +58,8 @@ var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 await context.Database.EnsureCreatedAsync();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

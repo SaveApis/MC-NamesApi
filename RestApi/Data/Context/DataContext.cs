@@ -23,7 +23,7 @@ public class DataContext : DbContext
     }
 
     public DbSet<AgreementModel> Agreements { get; set; }
-    public DbSet<PlayerNameModel> PlayerNames { get; set; }
-    public DbSet<PlayerNameHistoryModel> PlayerNameHistories { get; set; }
+    public DbSet<PlayerNameModel> Names { get; set; }
+    public DbSet<PlayerNameHistoryModel> Histories { get; set; }
     public DbSet<LogModel> Logs { get; set; }
 }

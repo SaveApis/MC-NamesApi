@@ -1,4 +1,5 @@
-﻿#region
+﻿#nullable disable
+#region
 
 using System.ComponentModel.DataAnnotations;
 
