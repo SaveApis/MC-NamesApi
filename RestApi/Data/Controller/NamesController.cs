@@ -7,19 +7,32 @@ using RestApi.Interfaces;
 
 namespace RestApi.Data.Controller;
 
+/// <summary>
+/// Controller to manage the current name of a player within the database.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
+[Produces("application/json")]
 public class NamesController : ControllerBase
 {
     private readonly DataContext _context;
 
+    /// <summary>
+    /// Default Constructor
+    /// </summary>
+    /// <param name="context"></param>
     public NamesController(DataContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Method to determine the current name from the UUID.
+    /// </summary>
+    /// <param name="uuid">The UUID of the Player</param>
+    /// <returns></returns>
     [HttpGet("{uuid:guid}")]
-    public async Task<ActionResult<IRestResult<PlayerNameModel>>> ByUuid(Guid uuid)
+    public async Task<ActionResult<IRestResult<PlayerNameModel>>> ByUuid(Guid uuid, [FromQuery] string? lang = "en")
     {
         if (!await _context.CheckAgreement(uuid))
             return Ok(IRestResult<PlayerNameModel>.Create(true,
@@ -30,8 +43,13 @@ public class NamesController : ControllerBase
             : IRestResult<PlayerNameModel>.Create(false, "Der Name wurde erfolgreich ausgelesen.", model));
     }
 
+    /// <summary>
+    /// Method to determine the current name from a past name.
+    /// </summary>
+    /// <param name="historyName">A past name of the Player</param>
+    /// <returns></returns>
     [HttpGet("{historyName}")]
-    public async Task<ActionResult<IRestResult<PlayerNameModel>>> ByHistory(string historyName)
+    public async Task<ActionResult<IRestResult<PlayerNameModel>>> ByHistory(string historyName, [FromQuery] string? lang = "en")
     {
         PlayerNameHistoryModel? historyModel =
             await _context.Histories.FirstOrDefaultAsync(it => it.Name.ToLower() == historyName.ToLower());
@@ -46,8 +64,14 @@ public class NamesController : ControllerBase
             historyModel.Player));
     }
 
+    /// <summary>
+    /// Method to update the current name in the database.
+    /// </summary>
+    /// <param name="uuid">The UUID of the Player</param>
+    /// <param name="name">The new name of the Player</param>
+    /// <returns></returns>
     [HttpPost("{uuid:guid}/{name}")]
-    public async Task<ActionResult<IRestResult<PlayerNameModel>>> Add(Guid uuid, string name)
+    public async Task<ActionResult<IRestResult<PlayerNameModel>>> Add(Guid uuid, string name, [FromQuery] string? lang = "en")
     {
         if (!await _context.CheckAgreement(uuid))
             return Ok(IRestResult<PlayerNameModel>.Create(true,

@@ -3,8 +3,15 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace RestApi.Data.Models.Examples.Agreement;
 
+/// <summary>
+/// Class that defines an example of a response from the REST API.
+/// </summary>
 public class UpdatePlayerExample : IMultipleExamplesProvider<IRestResult<bool>>
 {
+    /// <summary>
+    /// Override Method
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<SwaggerExample<IRestResult<bool>>> GetExamples()
     {
         yield return SwaggerExample.Create("On Success (Create -> True)", "On Success (Create -> True)",

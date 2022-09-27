@@ -1,4 +1,5 @@
 ﻿#nullable disable
+
 #region
 
 using System.ComponentModel.DataAnnotations;
@@ -7,9 +8,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RestApi.Data.Models;
 
+/// <summary>
+/// Class that determines the database model for the database.
+/// </summary>
 public class AgreementModel
 {
-    [Key] [Required] public Guid Uuid { get; set; }
+    /// <summary>
+    /// The UUID of the Player
+    /// </summary>
+    [Key]
+    [Required]
+    public Guid Uuid { get; set; } = Guid.NewGuid();
 
-    [Required] public bool AgreeValue { get; set; } = false;
+    /// <summary>
+    /// The value of whether the player has given his consent.
+    /// </summary>
+    [Required]
+    public bool AgreeValue { get; set; } = false;
 }

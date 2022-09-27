@@ -12,6 +12,9 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace RestApi.Data.Controller;
 
+/// <summary>
+/// Controllers to manage the consent of the players.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
@@ -19,14 +22,23 @@ public class AgreementController : ControllerBase
 {
     private readonly DataContext _context;
 
+    /// <summary>
+    /// Default Constructor
+    /// </summary>
+    /// <param name="context"></param>
     public AgreementController(DataContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Method to read a player’s consent.
+    /// </summary>
+    /// <param name="uuid">The player’s UUID</param>
+    /// <returns></returns>
     [HttpGet("{uuid:guid}")]
     [SwaggerResponseExample(200, typeof(GetPlayerExample))]
-    public async Task<ActionResult<IRestResult<bool>>> GetPlayer(Guid uuid)
+    public async Task<ActionResult<IRestResult<bool>>> GetPlayer(Guid uuid, [FromQuery] string? lang = "en")
     {
         AgreementModel? model = await _context.Agreements.FindAsync(uuid);
         if (model is null)
@@ -36,9 +48,15 @@ public class AgreementController : ControllerBase
             model.AgreeValue));
     }
 
+    /// <summary>
+    /// Method to manage a player’s consent
+    /// </summary>
+    /// <param name="uuid">The player's UUID</param>
+    /// <param name="agreed">True or false</param>
+    /// <returns></returns>
     [HttpPost("{uuid:guid}/{agreed:bool}")]
     [SwaggerResponseExample(200, typeof(UpdatePlayerExample))]
-    public async Task<ActionResult<IRestResult<bool>>> UpdatePlayer(Guid uuid, bool agreed)
+    public async Task<ActionResult<IRestResult<bool>>> UpdatePlayer(Guid uuid, bool agreed, [FromQuery] string? lang = "en")
     {
         LogModel logModel;
         IPAddress? address = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4();
