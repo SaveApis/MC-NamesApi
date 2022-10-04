@@ -3,7 +3,7 @@
 #region
 
 using Microsoft.EntityFrameworkCore;
-using RestApi.Data.Models;
+using RestApi.Data.Models.Db;
 
 #endregion
 

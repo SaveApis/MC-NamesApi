@@ -1,0 +1,12 @@
+{
+  "Info": {
+    "Display": "English",
+    "Identifier": "en",
+    "Version": 1
+  },
+  "Translations": {
+    "ControllerAgreementNoEntry": "No Entry found!",
+    "ControllerAgreementEntryFound": "Entry found!",
+    "ControllerAgreementNoChanges": "The same entry was found in the database! Nothing’s changed."
+  }
+}

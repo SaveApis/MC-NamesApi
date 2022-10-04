@@ -3,10 +3,10 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Data.Context;
-using RestApi.Data.Models;
-using RestApi.Data.Models.Examples.Agreement;
+using RestApi.Data.Models.Db;
+using RestApi.Data.Models.Language;
 using RestApi.Interfaces;
-using Swashbuckle.AspNetCore.Filters;
+using RestApi.Services;
 
 #endregion
 
@@ -35,17 +35,23 @@ public class AgreementController : ControllerBase
     /// Method to read a player’s consent.
     /// </summary>
     /// <param name="uuid">The player’s UUID</param>
+    /// <param name="lang">The identifier of the Response-Language</param>
     /// <returns></returns>
     [HttpGet("{uuid:guid}")]
-    [SwaggerResponseExample(200, typeof(GetPlayerExample))]
-    public async Task<ActionResult<IRestResult<bool>>> GetPlayer(Guid uuid, [FromQuery] string? lang = "en")
+    public async Task<ActionResult<IRestResult<bool>>> GetPlayer(Guid uuid, [FromQuery] string lang = "en")
     {
+        TranslationFileModel? langModel = await TranslationService.ByIdentifier(lang);
         AgreementModel? model = await _context.Agreements.FindAsync(uuid);
         if (model is null)
             return Ok(
-                IRestResult<bool>.Create(true, $"No entry for the UUID ({uuid}) was found in the database."));
-        return Ok(IRestResult<bool>.Create(false, $"Successfully found an entry for the UUID ({uuid})",
-            model.AgreeValue));
+                IRestResult.Create<bool>(true,
+                    langModel?.Translations.ControllerAgreementNoEntry ??
+                    $"No entry for the UUID ({uuid}) was found in the database."));
+        return Ok(
+            IRestResult.Create(false,
+                langModel?.Translations.ControllerAgreementEntryFound ??
+                $"Successfully found an entry for the UUID ({uuid})",
+                model.AgreeValue));
     }
 
     /// <summary>
@@ -53,11 +59,13 @@ public class AgreementController : ControllerBase
     /// </summary>
     /// <param name="uuid">The player's UUID</param>
     /// <param name="agreed">True or false</param>
+    /// <param name="lang">The identifier of the Response-Language</param>
     /// <returns></returns>
     [HttpPost("{uuid:guid}/{agreed:bool}")]
-    [SwaggerResponseExample(200, typeof(UpdatePlayerExample))]
-    public async Task<ActionResult<IRestResult<bool>>> UpdatePlayer(Guid uuid, bool agreed, [FromQuery] string? lang = "en")
+    public async Task<ActionResult<IRestResult<bool>>> UpdatePlayer(Guid uuid, bool agreed,
+        [FromQuery] string lang = "en")
     {
+        TranslationFileModel? langModel = await TranslationService.ByIdentifier(lang);
         LogModel logModel;
         IPAddress? address = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4();
         AgreementModel? existingModel = await _context.Agreements.FindAsync(uuid);
@@ -68,7 +76,7 @@ public class AgreementController : ControllerBase
                 Uuid = uuid,
                 AgreeValue = agreed
             };
-            logModel = new LogModel()
+            logModel = new LogModel
             {
                 Message =
                     $"Create AgreementEntry ({uuid} -> {agreed})",
@@ -78,18 +86,22 @@ public class AgreementController : ControllerBase
             await _context.Logs.AddAsync(logModel);
             await _context.SaveChangesAsync();
 
-            return Ok(IRestResult<bool>.Create(false, $"The entry for the UUID ({uuid}) was successfully created.",
+            return Ok(IRestResult.Create(
+                false,
+                $"The entry for the UUID ({uuid}) was successfully created.",
                 agreed));
         }
 
         if (agreed == existingModel.AgreeValue)
-            return Ok(IRestResult<bool>.Create(false,
-                "The specified value is the same as in the database. No changes will be made.", agreed));
+            return Ok(IRestResult.Create(false,
+                langModel?.Translations.ControllerAgreementNoChanges ??
+                "The specified value is the same as in the database. No changes will be made.",
+                agreed));
 
         bool tmpAgree = existingModel.AgreeValue;
         existingModel.AgreeValue = agreed;
         _context.Agreements.Update(existingModel);
-        logModel = new LogModel()
+        logModel = new LogModel
         {
             Message =
                 $"Update AgreementEntry ({uuid} -> ({tmpAgree} -> {agreed}))",
@@ -97,7 +109,7 @@ public class AgreementController : ControllerBase
         };
         await _context.Logs.AddAsync(logModel);
         await _context.SaveChangesAsync();
-        return Ok(IRestResult<bool>.Create(false, $"The entry for the UUID ({uuid}) has been successfully updated.",
+        return Ok(IRestResult.Create(false, $"The entry for the UUID ({uuid}) has been successfully updated.",
             agreed));
     }
 }

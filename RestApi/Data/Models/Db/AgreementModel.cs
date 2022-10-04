@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 #endregion
 
-namespace RestApi.Data.Models;
+namespace RestApi.Data.Models.Db;
 
 /// <summary>
 /// Class that determines the database model for the database.

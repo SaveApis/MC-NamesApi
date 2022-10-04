@@ -6,7 +6,7 @@ using System.Net;
 
 #endregion
 
-namespace RestApi.Data.Models;
+namespace RestApi.Data.Models.Db;
 
 /// <summary>
 /// Class that determines the database model for the database.
