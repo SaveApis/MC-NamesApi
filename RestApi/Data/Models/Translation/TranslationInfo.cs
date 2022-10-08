@@ -1,4 +1,4 @@
-﻿namespace RestApi.Data.Models.Language;
+﻿namespace RestApi.Data.Models.Translation;
 
 /// <summary>
 /// Model to specify the Language Info

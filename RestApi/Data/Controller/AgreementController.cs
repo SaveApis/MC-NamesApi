@@ -4,7 +4,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Data.Context;
 using RestApi.Data.Models.Db;
-using RestApi.Data.Models.Language;
+using RestApi.Data.Models.Translation;
 using RestApi.Interfaces;
 using RestApi.Services;
 

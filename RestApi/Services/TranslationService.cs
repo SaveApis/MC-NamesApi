@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using RestApi.Data.Models.Language;
+using RestApi.Data.Models.Translation;
 
 namespace RestApi.Services;
 

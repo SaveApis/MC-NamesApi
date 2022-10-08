@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestApi.Data.Models.Language;
+using RestApi.Data.Models.Translation;
 using RestApi.Interfaces;
 using RestApi.Services;
 
@@ -11,7 +11,7 @@ namespace RestApi.Data.Controller;
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
-public class LanguagesController : ControllerBase
+public class TranslationController : ControllerBase
 {
     /// <summary>
     /// Method to list all LanguageInfo's

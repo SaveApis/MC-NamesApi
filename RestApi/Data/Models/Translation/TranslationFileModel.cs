@@ -1,5 +1,5 @@
 ﻿#nullable disable
-namespace RestApi.Data.Models.Language;
+namespace RestApi.Data.Models.Translation;
 
 /// <summary>
 /// Specify the format of the language model (Used in API and Lang-File)
