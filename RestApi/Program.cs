@@ -1,7 +1,6 @@
 #region
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using RestApi.Data.Context;
 
 #endregion
@@ -28,4 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run("http://localhost:5000");
+if (!int.TryParse(app.Configuration["RunningPort"], out int port))
+    return;
+app.Run($"http://localhost:{port}");
