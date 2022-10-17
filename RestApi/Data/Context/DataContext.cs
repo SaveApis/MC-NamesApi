@@ -3,7 +3,6 @@
 #region
 
 using Microsoft.EntityFrameworkCore;
-using RestApi.Data.Models.Db;
 
 #endregion
 
@@ -21,24 +20,4 @@ public class DataContext : DbContext
     public DataContext(DbContextOptions options) : base(options)
     {
     }
-
-    /// <summary>
-    /// Ref DbSet to EF-Core
-    /// </summary>
-    public DbSet<AgreementModel> Agreements { get; set; }
-
-    /// <summary>
-    /// Ref DbSet to EF-Core
-    /// </summary>
-    public DbSet<PlayerNameModel> Names { get; set; }
-
-    /// <summary>
-    /// Ref DbSet to EF-Core
-    /// </summary>
-    public DbSet<PlayerNameHistoryModel> Histories { get; set; }
-
-    /// <summary>
-    /// Ref DbSet to EF-Core
-    /// </summary>
-    public DbSet<LogModel> Logs { get; set; }
 }

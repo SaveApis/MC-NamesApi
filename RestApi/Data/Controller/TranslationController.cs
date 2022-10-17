@@ -1,42 +1,58 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using RestApi.Data.Models.Rest;
 using RestApi.Data.Models.Translation;
-using RestApi.Interfaces;
-using RestApi.Services;
 
 namespace RestApi.Data.Controller;
 
-/// <summary>
-/// Controller to list all available Languages
-/// </summary>
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
-public class TranslationController : ControllerBase
+public class TranslationController
 {
-    /// <summary>
-    /// Method to list all LanguageInfo's
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public async Task<ActionResult<IRestResult<IEnumerable<TranslationInfo>>>> All()
+    private readonly ILogger<TranslationController> _logger;
+
+    public TranslationController(ILogger<TranslationController> logger)
     {
-        IEnumerable<TranslationInfo> langInfos = (await TranslationService.AllTranslations()).Select(it => it.Info).ToList();
-        return Ok(IRestResult.Create(false, "", langInfos));
+        _logger = logger;
     }
 
-    /// <summary>
-    /// Method to list all Translations with this identifier
-    /// </summary>
-    /// <param name="identifier">The given Identifier</param>
-    /// <returns></returns>
-    [HttpGet("{identifier}")]
-    public async Task<ActionResult<IRestResult<Translation>>> ByIdentifier(string identifier)
+    [HttpGet]
+    public async Task<BaseRestResult<List<TranslationInfo>>> All()
     {
-        IEnumerable<TranslationFileModel> models = await TranslationService.AllTranslations();
-        TranslationFileModel? model = models.FirstOrDefault(it =>
+        List<Translation> translations = await LoadTranslations();
+        List<TranslationInfo> infos = translations.Select(it => it.Info).ToList();
+        return new BaseRestResult<List<TranslationInfo>>(false, "", infos);
+    }
+
+    [HttpGet("{identifier}")]
+    public async Task<BaseRestResult<Translation>> ByIdentifier(string identifier)
+    {
+        IEnumerable<Translation> translations = await LoadTranslations();
+        Translation? translation = translations.FirstOrDefault(it =>
             it.Info.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
-        return Ok(model is null
-            ? IRestResult.Create<Translation>(true, "")
-            : IRestResult.Create(false, "", model.Translations));
+        return translation is null
+            ? new BaseRestResult<Translation>(true, "")
+            : new BaseRestResult<Translation>(false, "", translation);
+    }
+
+    private async Task<List<Translation>> LoadTranslations()
+    {
+        string[] langFiles = Directory.GetFiles("Resources/Lang");
+        List<Translation> langs = new List<Translation>();
+        foreach (string file in langFiles)
+        {
+            await using Stream stream = File.OpenRead(file);
+            Translation? translation = await JsonSerializer.DeserializeAsync<Translation>(stream);
+            if (translation is null)
+            {
+                _logger.LogWarning("Failed to load Translation {File}", file);
+                continue;
+            }
+
+            langs.Add(translation);
+        }
+
+        return langs;
     }
 }

@@ -1,12 +1,7 @@
 {
   "Info": {
-    "Display": "Deutsch",
-    "Identifier": "de",
-    "Version": 1
+    "DisplayName": "Deutsch",
+    "Identifier": "de"
   },
-  "Translations": {
-    "ControllerAgreementNoEntry": "Kein Eintrag gefunden!",
-    "ControllerAgreementEntryFound": "Eintrag wurde gefunden!",
-    "ControllerAgreementNoChanges": "Derselbe Eintrag wurde in der Datenbank gefunden! Nichts wurde verändert."
-  }
+  "Translations": []
 }
