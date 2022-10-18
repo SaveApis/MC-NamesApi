@@ -6,12 +6,12 @@
 public class TranslationInfo
 {
     /// <summary>
-    /// Specify the Name of the Language
+    /// Specify the name of the language
     /// </summary>
     public string DisplayName { get; set; } = "English";
 
     /// <summary>
-    /// Specify the Identifier of the Language
+    /// Specify the identifier of the language
     /// </summary>
     public string Identifier { get; set; } = "en";
 }
