@@ -3,5 +3,26 @@
     "DisplayName": "Deutsch",
     "Identifier": "de"
   },
-  "Translations": []
+  "Content": [
+    {
+      "Key": "controller.success.read",
+      "Translation": "Der Datensatz wurde erfolgreich ausgelesen.",
+      "Description": ""
+    },
+    {
+      "Key": "controller.success.create",
+      "Translation": "Der Datensatz wurde erfolgreich erstellt.",
+      "Description": ""
+    },
+    {
+      "Key": "controller.success.delete",
+      "Translation": "Der Datensatz wurde erfolgreich gelöscht.",
+      "Description": ""
+    },
+    {
+      "Key": "controller.success.update",
+      "Translation": "Der Datensatz wurde erfolgreich aktualisiert.",
+      "Description": ""
+    }
+  ]
 }

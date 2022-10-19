@@ -3,5 +3,26 @@
     "DisplayName": "English",
     "Identifier": "en"
   },
-  "Translations": []
+  "Content": [
+    {
+      "Key": "controller.success.read",
+      "Translation": "The record was successfully read.",
+      "Description": ""
+    },
+    {
+      "Key": "controller.success.create",
+      "Translation": "The record was successfully created.",
+      "Description": ""
+    },
+    {
+      "Key": "controller.success.delete",
+      "Translation": "The record was successfully deleted.",
+      "Description": ""
+    },
+    {
+      "Key": "controller.success.update",
+      "Translation": "The record was successfully updated.",
+      "Description": ""
+    }
+  ]
 }
