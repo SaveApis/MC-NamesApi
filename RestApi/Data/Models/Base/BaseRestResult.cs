@@ -1,4 +1,4 @@
-﻿namespace RestApi.Data.Models.Rest;
+﻿namespace RestApi.Data.Models.Base;
 
 public class BaseRestResult<TResult>
 {
