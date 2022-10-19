@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Data.Models.Rest;
+using RestApi.Data.Models.Base;
 using RestApi.Data.Models.Translation;
 
 namespace RestApi.Data.Controller;
@@ -8,7 +8,7 @@ namespace RestApi.Data.Controller;
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
-public class TranslationController
+public class TranslationController : ControllerBase
 {
     private readonly ILogger<TranslationController> _logger;
 
@@ -18,35 +18,35 @@ public class TranslationController
     }
 
     [HttpGet]
-    public async Task<BaseRestResult<List<TranslationInfo>>> All()
+    public async Task<ActionResult<BaseRestResult<List<TranslationInfo>>>> All()
     {
         List<Translation> translations = await LoadTranslations();
         List<TranslationInfo> infos = translations.Select(it => it.Info).ToList();
-        return new BaseRestResult<List<TranslationInfo>>(false, $"Loaded {(infos.Count is not 1 ? $"{infos.Count} translations" : $"one translation")}!", infos);
+        return Ok(new BaseRestResult<List<TranslationInfo>>(false,
+            $"Loaded {(infos.Count is not 1 ? $"{infos.Count} translations" : "one translation")}!", infos));
     }
 
     [HttpGet("{identifier}")]
-    public async Task<BaseRestResult<Translation>> ByIdentifier(string identifier)
+    public async Task<ActionResult<BaseRestResult<Translation>>> ByIdentifier(string identifier)
     {
         IEnumerable<Translation> translations = await LoadTranslations();
         Translation? translation = translations.FirstOrDefault(it =>
             it.Info.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
-        return translation is null
+        return Ok(translation is null
             ? new BaseRestResult<Translation>(true, "")
-            : new BaseRestResult<Translation>(false, "", translation);
+            : new BaseRestResult<Translation>(false, "", translation));
     }
 
-    private async Task<List<Translation>> LoadTranslations()
+    public static async Task<List<Translation>> LoadTranslations()
     {
         string[] langFiles = Directory.GetFiles("Resources/Lang");
         List<Translation> langs = new List<Translation>();
         foreach (string file in langFiles)
         {
-            await using Stream stream = File.OpenRead(file);
+            await using Stream stream = System.IO.File.OpenRead(file);
             Translation? translation = await JsonSerializer.DeserializeAsync<Translation>(stream);
             if (translation is null)
             {
-                _logger.LogWarning("Failed to load Translation {File}", file);
                 continue;
             }
 
