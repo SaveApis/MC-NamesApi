@@ -22,7 +22,7 @@ public class TranslationController
     {
         List<Translation> translations = await LoadTranslations();
         List<TranslationInfo> infos = translations.Select(it => it.Info).ToList();
-        return new BaseRestResult<List<TranslationInfo>>(false, "", infos);
+        return new BaseRestResult<List<TranslationInfo>>(false, $"Loaded {(infos.Count is not 1 ? $"{infos.Count} translations" : $"one translation")}!", infos);
     }
 
     [HttpGet("{identifier}")]
