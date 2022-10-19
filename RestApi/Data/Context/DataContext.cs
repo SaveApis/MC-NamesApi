@@ -3,6 +3,7 @@
 #region
 
 using Microsoft.EntityFrameworkCore;
+using RestApi.Data.Models.Rest;
 
 #endregion
 
@@ -20,4 +21,6 @@ public class DataContext : DbContext
     public DataContext(DbContextOptions options) : base(options)
     {
     }
+    
+    public DbSet<AgreementModel> Agreements { get; set; }
 }
