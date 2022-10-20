@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestApi.Data.Context;
+using RestApi.Data.Controller.Base;
 using RestApi.Data.Models.Base;
 using RestApi.Data.Models.Rest;
 using RestApi.Data.Models.Translation;
@@ -7,16 +8,10 @@ using RestApi.Services;
 
 namespace RestApi.Data.Controller;
 
-[ApiController]
-[Route("[controller]")]
-[Produces("application/json")]
-public class AgreementController : ControllerBase
+public class AgreementController : BaseController<AgreementController>
 {
-    private readonly DataContext _context;
-
-    public AgreementController(DataContext context)
+    public AgreementController(DataContext context, ILogger<AgreementController> logger) : base(context, logger)
     {
-        _context = context;
     }
 
     [HttpGet("{uuid:guid}")]

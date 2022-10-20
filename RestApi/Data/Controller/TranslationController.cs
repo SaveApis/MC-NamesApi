@@ -1,20 +1,16 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using RestApi.Data.Context;
+using RestApi.Data.Controller.Base;
 using RestApi.Data.Models.Base;
 using RestApi.Data.Models.Translation;
 
 namespace RestApi.Data.Controller;
 
-[ApiController]
-[Route("[controller]")]
-[Produces("application/json")]
-public class TranslationController : ControllerBase
+public class TranslationController : BaseController<TranslationController>
 {
-    private readonly ILogger<TranslationController> _logger;
-
-    public TranslationController(ILogger<TranslationController> logger)
+    public TranslationController(DataContext context, ILogger<TranslationController> logger) : base(context, logger)
     {
-        _logger = logger;
     }
 
     [HttpGet]
