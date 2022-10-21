@@ -23,6 +23,27 @@
       "Key": "controller.success.update",
       "Translation": "Der Datensatz wurde erfolgreich aktualisiert.",
       "Description": ""
+    },
+    {
+      "Key": "controller.failed.read",
+      "Translation": "Der Datensatz konnte nicht ausgelesen werden (Grund: {0}).",
+      "Description": ""
+    },
+    {
+      "Key": "controller.failed.noAgreement",
+      "Translation": "Dieser/Diese Spieler/Spielerin hat noch nicht zugestimmt! Die Daten sind daher nicht lesbar und werden nicht aktualisiert solange er/sie nicht das Einverständnis gegeben haben!",
+      "Description": ""
+    },
+
+
+
+
+
+
+    {
+      "Key": "reason.database.noEntryFound",
+      "Translation": "Es wurde kein Eintrag in der Datenbank gefunden",
+      "Description": ""
     }
   ]
 }
