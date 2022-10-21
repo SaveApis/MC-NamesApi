@@ -16,7 +16,7 @@ public class AgreementController : BaseController<AgreementController>
 
     [HttpGet("{uuid:guid}")]
     public async Task<ActionResult<BaseRestResult<AgreementModel>>> HasAgreement(Guid uuid,
-        [FromQuery] string? lang)
+        [FromQuery] string? lang = "en")
     {
         lang ??= "en";
         TranslationContent successRead =
@@ -38,7 +38,7 @@ public class AgreementController : BaseController<AgreementController>
 
     [HttpPost("{uuid:guid}")]
     public async Task<ActionResult<BaseRestResult<AgreementModel>>> ToggleAgreement(Guid uuid,
-        [FromQuery] string? lang)
+        [FromQuery] string? lang = "en")
     {
         lang ??= "en";
         TranslationContent successUpdate =
