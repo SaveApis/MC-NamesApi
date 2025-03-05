@@ -1,0 +1,71 @@
+services:
+  backend:
+    depends_on:
+      redis:
+        condition: service_healthy
+        required: true
+    image: mc-namesapi-backend:dev
+    build:
+      context: ..
+      dockerfile: src/Backend/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - application_type=backend
+      - jwt_issuer=mc-namesapi
+      - jwt_audience=mc-namesapi
+      - jwt_key=<token>
+      - hangfire_name=MC-NamesApis
+      - hangfire_redis_host=redis
+      - hangfire_redis_port=6379
+      - hangfire_redis_database=0
+      - "hangfire_redis_prefix=mc-namesapi:hangfire:"
+    ports:
+      - "80:8080"
+  server:
+    depends_on:
+      redis:
+        condition: service_healthy
+        required: true
+    image: mc-namesapi-server:dev
+    build:
+      context: ..
+      dockerfile: src/Backend/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - application_type=server
+      - hangfire_name=MC-NamesApis
+      - hangfire_redis_host=redis
+      - hangfire_redis_port=6379
+      - hangfire_redis_database=0
+      - "hangfire_redis_prefix=mc-namesapi:hangfire:"
+  worker:
+    depends_on:
+      redis:
+        condition: service_healthy
+        required: true
+    image: mc-namesapi-worker:dev
+    build:
+      context: ..
+      dockerfile: src/Backend/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - application_type=worker
+      - hangfire_name=MC-NamesApis
+      - hangfire_redis_host=redis
+      - hangfire_redis_port=6379
+      - hangfire_redis_database=0
+      - "hangfire_redis_prefix=mc-namesapi:hangfire:"
+  redis:
+    image: redis:8.0-M03-alpine3.21
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping", "|", "grep", "PONG" ]
+      interval: 1s
+      timeout: 1s
+      retries: 20
+
+volumes:
+  redis:
