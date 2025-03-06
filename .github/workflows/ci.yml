@@ -4,7 +4,7 @@ on:
     paths:
       - src/**
       - tests/**
-      - .github/workflows/ci.yml
+      - .github/workflows/**
 
 jobs:
   lint:
