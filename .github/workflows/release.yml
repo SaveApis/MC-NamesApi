@@ -1,0 +1,34 @@
+﻿name: Release
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4.3.0
+        with:
+          dotnet-version: 9.0.x
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Versionize
+        run: dotnet versionize
+      - name: Read Version
+        id: read_version
+        run: echo "version=$(dotnet versionize inspect)" >> "$GITHUB_OUTPUT"
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
+        with:
+          commit_author: '${{ github.actor }}'
+          commit_message: 'chore(release): Release ${{ steps.read_version.outputs.version }}'
+          commit_options: '--force --follow-tags'
+          branch: '${{ github.ref }}'
